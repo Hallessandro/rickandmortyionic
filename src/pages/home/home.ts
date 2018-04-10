@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { HttpClient } from '@angular/common/http';
+import { Personagem } from '../../_dominio/personagem';
 
 @Component({
   selector: 'page-home',
@@ -7,8 +9,19 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
+  personagens: Personagem[] = [];
+  constructor(public navCtrl: NavController, private _http: HttpClient) {}
 
+  ionViewDidLoad(){
+    this.getPersonagens();
   }
 
+  getPersonagens(){
+    this._http.get<Personagem[]>("https://rickandmortyapi.com/api/character/")
+      .subscribe((retorno) => {
+          this.personagens = retorno.results;
+      }, error => {
+        console.error(error);
+      });
+  }
 }
