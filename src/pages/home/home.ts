@@ -19,7 +19,11 @@ export class HomePage {
   getPersonagens(){
     this._http.get<Personagem[]>("https://rickandmortyapi.com/api/character/")
       .subscribe((retorno) => {
+        if(retorno){
           this.personagens = retorno.results;
+        }else {
+          this.personagens = [];
+        }
       }, error => {
         console.error(error);
       });
